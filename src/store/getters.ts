@@ -5,7 +5,8 @@ import { GetterTree } from 'vuex'
 const Getters: GetterTree<RootStateProps, RootStateProps> = {
   locale: () => store.state.AppModule.locale,
   asideBarCollapseState: () => store.state.AppModule.asideCollapse,
-  componentCacheList: () => store.state.AppModule.componentCacheList
+  componentCacheList: () => store.state.AppModule.componentCacheList,
+  token: () => store.state.UserModule.token
 }
 
 export default Getters

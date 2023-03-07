@@ -9,6 +9,7 @@ export interface AppModuleStateProps {
 }
 
 export interface UserModuleStateProps {
+  token?: string
   isLogin: boolean
 }
 

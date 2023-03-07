@@ -47,6 +47,7 @@ import { MutActKey } from '@/constants'
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { userLogin } from '@/api/user'
 export default defineComponent({
   setup() {
     const router = useRouter()
@@ -87,9 +88,10 @@ export default defineComponent({
     const loginAction = () => {
       formRef.value.validate((isValid: boolean) => {
         if (isValid) {
-          isSubmitLoading.value = true
+          const { result, isLoading } = userLogin(loginForm)
+          isSubmitLoading.value = isLoading.value
           store
-            .dispatch(MutActKey.LOGIN, loginForm)
+            .dispatch(MutActKey.LOGIN, result.value?.data)
             .catch(() => console.error('login error'))
             .finally(() => (isSubmitLoading.value = false))
             .then(res => {

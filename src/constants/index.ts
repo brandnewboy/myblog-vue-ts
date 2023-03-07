@@ -12,3 +12,7 @@ export class MutActKey {
   public static ADD_COMPONENT_CACHE =
     StoreModuleName.APP + '/ADD_COMPONENT_CACHE'
 }
+
+export class StorageModuleKey {
+  public static TOKEN_KEY = 'TOKEN'
+}

@@ -1,7 +1,10 @@
+import { useAuth } from '@/components/AuthProvider'
 import { RequestConfigProps } from '@/types/api/request'
 import Utils from '@/utils'
+import { useAsync } from '@/utils/hooks/useAsync'
+import { ElMessage } from 'element-plus'
 
-const BASE_URL = 'http://localhost:3001'
+const BASE_URL = 'http://localhost:3001/api/v1'
 
 /**
  * 网络请求
@@ -43,13 +46,46 @@ export const http = async <R extends { [k: string]: any }, D>(
       .then(async res => {
         if (res.status === 401) reject({ msg: '请授权' })
         if (res.ok) {
-          resolve(await res.json())
+          const data = await res.json()
+          if (data.code !== 200) {
+            ElMessage({
+              message: data.msg || '请求出错',
+              type: 'error'
+            })
+          }
+          resolve(data)
         } else {
+          ElMessage({
+            message: '请求出错!请检查网络或服务端设置!',
+            type: 'error'
+          })
           reject(new Error('请求出错'))
         }
       })
       .catch(() => {
+        ElMessage({
+          message: '请求出错!请检查网络或服务端设置!',
+          type: 'error'
+        })
         reject(new Error('请求出错!'))
       })
   })
+}
+
+/**
+ * useHtpp Hook
+ * @param path 请求路径
+ * @param options 配置选项
+ * @returns
+ */
+export const useHttp = <RequestData extends { [k: string]: any }, ResponseData>(
+  path: string,
+  options: RequestConfigProps<RequestData>
+) => {
+  const auth = useAuth()
+  if (!options.token && auth) {
+    options.token = auth
+  }
+  const res = useAsync<ResponseData>(http(path, options))
+  return res
 }

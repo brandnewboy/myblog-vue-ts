@@ -22,7 +22,8 @@ import {
   ElSteps,
   ElStep,
   ElTabs,
-  ElTabPane
+  ElTabPane,
+  ElMessage
 } from 'element-plus'
 
 const components = [
