@@ -1,0 +1,18 @@
+@mixin flex($direction: row, $justify-content: center, $align-items: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+@mixin position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin layout($border: bottom) {
+  border: none;
+  border-#{$border}: $border-custom-primary;
+}

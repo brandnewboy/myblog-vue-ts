@@ -1,0 +1,72 @@
+
+
+.el-menu {
+  background-color: transparent !important;
+  border-right: none !important;
+}
+.el-sub-menu__title {
+  color: $color-font-primary !important;
+}
+.el-sub-menu__title:hover {
+  color: $color-font-primary !important;
+  background-color: $color-bg-darker-primary !important;
+}
+.el-menu-item {
+  color: $color-font-primary;
+}
+.el-sub-menu:hover {
+  // background-color: $color-bg-darker-primary !important;
+  background-color: transparent;
+}
+.el-menu-item:hover {
+  background-color: $color-bg-darker-primary !important;
+}
+
+.el-menu-item .is-active {
+  color: $color-font-active !important;
+}
+
+.el-popper.is-light {
+  background-color: rgba(62, 62, 62, 0.6);// !important;
+}
+
+.el-collapse {
+    --el-collapse-border-color: var(--el-border-color-lighter);
+    --el-collapse-header-height: 48px;
+    --el-collapse-header-bg-color: rgba(0,0,0,0.1);
+    --el-collapse-header-text-color: white;
+    --el-collapse-header-font-size: 13px;
+    --el-collapse-content-bg-color: rgba(0,0,0,0.1);
+    --el-collapse-content-font-size: 13px;
+    --el-collapse-content-text-color: ehite;
+    border-top: none;
+    border-bottom: none;
+
+    .el-collapse-item__header, .el-collapse-item__content {
+      padding: 0 1rem;
+    }
+}
+
+.el-form-item__label {
+  color: $color-font-primary;
+}
+
+.el-step.is-vertical .el-step__line {
+  width: 2px;
+  top: 0;
+  bottom: 0;
+  left: 0.5rem;
+}
+
+.el-step__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.el-step.is-vertical .el-step__main {
+  padding-left: 2px;
+}
+
+.el-step__title {
+  font-size: 1rem;
+}

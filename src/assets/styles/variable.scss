@@ -1,0 +1,15 @@
+/* theme-color */
+$color-homebg-primary: rgba(62, 62, 62, 0.4);
+$color-bg-darker-primary: darken($color-homebg-primary, 30%);
+$color-border-primary: lighten($color-homebg-primary, 50%);
+$color-font-primary: #f9fafb;
+$color-font-active: darken($color-font-primary, 30%);
+$color-bg-collapse-content: rgba(0,0,0,0.5);
+
+/* border */
+$border-custom-primary: 1px solid $color-border-primary;
+
+
+
+/* margin */
+$margin-base: 0.5rem

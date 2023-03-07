@@ -1,0 +1,36 @@
+
+
+/* user-center notes */
+.notes-move {
+  transition: all 0.3s;
+}
+
+.notes-enter-active {
+  transition: all 0.3s;
+}
+
+.notes-leave-active {
+  transition: all 0.3s;
+}
+
+.notes-enter-from,
+.notes-leave-to {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+
+/* main-view main */
+.main-enter-active,
+.main-leave-active {
+  transition: all 0.3s;
+}
+
+.main-enter-from {
+  opacity: 0;
+  transform: translatex(-80px);
+}
+.main-leave-to {
+  opacity: 0;
+  transform: translatex(80px);
+}

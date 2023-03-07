@@ -1,0 +1,15 @@
+import { createApp, defineComponent, h } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import SvgIcon from '@/icons'
+import Element from '@/plugins/element-plus'
+import '@/icons/index'
+import 'element-plus/dist/index.css'
+import './assets/styles/index.scss'
+import '@toast-ui/editor/dist/toastui-editor.css'
+import '@toast-ui/editor/dist/theme/toastui-editor-dark.css'
+import '@toast-ui/editor/dist/i18n/zh-cn'
+import '@toast-ui/editor/dist/toastui-editor-viewer.css'
+
+createApp(App).use(store).use(router).use(SvgIcon).use(Element).mount('#app')
