@@ -1,6 +1,5 @@
-import { ResponseProps } from '@/types/api/request'
 import { LoginFormProps } from '@/types/base'
-import { useHttp } from './request'
+import { http, useHttp } from './request'
 
 /**
  * 用户登录
@@ -8,10 +7,21 @@ import { useHttp } from './request'
  * @returns 结果
  */
 export const userLogin = (formData: LoginFormProps) => {
-  const res = useHttp<LoginFormProps, ResponseProps<boolean>>('/login', {
+  return http<LoginFormProps, { token: string }>('/login', {
     method: 'POST',
     data: formData
   })
+}
 
-  return { ...res }
+/**
+ * 获取用户列表
+ * @param param 搜索参数
+ */
+export const useUserList = (param: string) => {
+  const res = useHttp('/user-list', {
+    method: 'GET',
+    data: param
+  })
+
+  return res
 }

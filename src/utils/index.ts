@@ -29,10 +29,11 @@ export default class Utils {
    * @param obj
    * @returns
    */
-  public static cleanObject<T extends { [k: string]: any }>(obj: T) {
+  public static cleanObject<T extends object>(obj: T) {
+    if (typeof obj !== 'object') return obj
     const newObj = this.deepClone(obj)
     return Object.keys(obj).reduce<{ [k: string]: any }>((res, key) => {
-      const value = newObj[key]
+      const value = this.isValidKey(key, obj) && newObj[key]
       if (value && value !== 0) {
         res[key] = value
       }

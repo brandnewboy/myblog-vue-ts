@@ -44,7 +44,7 @@ import Utils from '@/utils'
 import { LoginFormProps } from '@/types/base'
 import { ContainerBgController } from '@/utils/style/login'
 import { MutActKey } from '@/constants'
-import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { defineComponent, onMounted, reactive, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { userLogin } from '@/api/user'
@@ -88,15 +88,13 @@ export default defineComponent({
     const loginAction = () => {
       formRef.value.validate((isValid: boolean) => {
         if (isValid) {
-          const { result, isLoading } = userLogin(loginForm)
-          isSubmitLoading.value = isLoading.value
-          store
-            .dispatch(MutActKey.LOGIN, result.value?.data)
-            .catch(() => console.error('login error'))
-            .finally(() => (isSubmitLoading.value = false))
+          isSubmitLoading.value = true
+          userLogin(loginForm)
             .then(res => {
-              if (res) router.push({ name: 'Home' })
+              store.dispatch(MutActKey.LOGIN, res.data?.token)
+              router.push({ name: 'home' })
             })
+            .finally(() => (isSubmitLoading.value = false))
         }
       })
     }

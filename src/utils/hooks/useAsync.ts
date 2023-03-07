@@ -1,13 +1,13 @@
 import { ref } from 'vue'
 
 export const useAsync = <D>(cbResult: Promise<D>) => {
-  const result = ref<D>()
+  const data = ref<D>()
   const isError = ref<boolean>(false)
   const error = ref<Error>()
   const isLoading = ref<boolean>(true)
   cbResult
     .then(res => {
-      result.value = <D>res
+      data.value = res
     })
     .catch(err => {
       isError.value = true
@@ -17,5 +17,5 @@ export const useAsync = <D>(cbResult: Promise<D>) => {
       isLoading.value = false
     })
 
-  return { result, error, isError, isLoading }
+  return { data, error, isError, isLoading }
 }

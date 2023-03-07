@@ -1,5 +1,5 @@
 import { useAuth } from '@/components/AuthProvider'
-import { RequestConfigProps } from '@/types/api/request'
+import { RequestConfigProps, ResponseProps } from '@/types/api/request'
 import Utils from '@/utils'
 import { useAsync } from '@/utils/hooks/useAsync'
 import { ElMessage } from 'element-plus'
@@ -12,7 +12,7 @@ const BASE_URL = 'http://localhost:3001/api/v1'
  * @param {RequestConfigProps} options 请求配置
  * @returns 请求结果
  */
-export const http = async <R extends { [k: string]: any }, D>(
+export const http = async <R extends object | string | number, D>(
   path: string,
   options: RequestConfigProps<R>
 ) => {
@@ -23,7 +23,7 @@ export const http = async <R extends { [k: string]: any }, D>(
     data &&
     typeof data === 'object'
   ) {
-    param = Utils.getQueryStr(Utils.cleanObject<R>(data))
+    param = Utils.getQueryStr(Utils.cleanObject(data))
     if (param) path += `?${param}`
   }
 
@@ -41,7 +41,7 @@ export const http = async <R extends { [k: string]: any }, D>(
     delete config['body']
   }
 
-  return new Promise<D>((resolve, reject) => {
+  return new Promise<ResponseProps<D>>((resolve, reject) => {
     fetch(`${BASE_URL}${path}`, config)
       .then(async res => {
         if (res.status === 401) reject({ msg: '请授权' })
@@ -78,7 +78,10 @@ export const http = async <R extends { [k: string]: any }, D>(
  * @param options 配置选项
  * @returns
  */
-export const useHttp = <RequestData extends { [k: string]: any }, ResponseData>(
+export const useHttp = <
+  RequestData extends object | number | string,
+  ResponseData
+>(
   path: string,
   options: RequestConfigProps<RequestData>
 ) => {
@@ -86,6 +89,8 @@ export const useHttp = <RequestData extends { [k: string]: any }, ResponseData>(
   if (!options.token && auth) {
     options.token = auth
   }
-  const res = useAsync<ResponseData>(http(path, options))
+  const res = useAsync<ResponseProps<ResponseData>>(
+    http<RequestData, ResponseData>(path, options)
+  )
   return res
 }
