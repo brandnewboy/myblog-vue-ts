@@ -1,7 +1,7 @@
 import { useAuth } from '@/components/AuthProvider'
 import { RequestConfigProps, ResponseProps } from '@/types/api/request'
 import Utils from '@/utils'
-import { useAsync } from '@/utils/hooks/useAsync'
+import { useAsync } from '@/utils/hooks/use-async'
 import { ElMessage } from 'element-plus'
 
 const BASE_URL = 'http://localhost:3001/api/v1'
