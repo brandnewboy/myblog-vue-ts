@@ -15,3 +15,5 @@ export interface UserProps {
   name: string
   age: number
 }
+
+type MessageType = 'success' | 'warning' | 'info' | 'error'

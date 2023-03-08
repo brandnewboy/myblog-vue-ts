@@ -92,7 +92,7 @@ export default defineComponent({
           userLogin(loginForm)
             .then(res => {
               store.dispatch(MutActKey.LOGIN, res.data?.token)
-              router.push({ name: 'home' })
+              router.push({ name: 'Home' })
             })
             .finally(() => (isSubmitLoading.value = false))
         }

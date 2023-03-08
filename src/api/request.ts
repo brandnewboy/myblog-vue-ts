@@ -47,26 +47,23 @@ export const http = async <R extends object | string | number, D>(
         if (res.status === 401) reject({ msg: '请授权' })
         if (res.ok) {
           const data = await res.json()
-          if (data.code !== 200) {
-            ElMessage({
-              message: data.msg || '请求出错',
-              type: 'error'
-            })
-          }
+
+          window.$message(
+            data.msg || '请求出错',
+            data.code !== 200 ? 'error' : 'success'
+          )
+
           resolve(data)
         } else {
-          ElMessage({
-            message: '请求出错!请检查网络或服务端设置!',
-            type: 'error'
-          })
+          window.$message('请求出错!请检查网络或服务端设置!', 'error')
           reject(new Error('请求出错'))
         }
       })
-      .catch(() => {
-        ElMessage({
-          message: '请求出错!请检查网络或服务端设置!',
-          type: 'error'
-        })
+      .catch((e: Error) => {
+        window.$message(
+          e ? e.message : '请求出错!请检查网络或服务端设置!',
+          'error'
+        )
         reject(new Error('请求出错!'))
       })
   })

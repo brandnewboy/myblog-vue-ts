@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { MutActKey } from '@/constants'
+import { MutActKey, StorageModuleKey } from '@/constants'
+import { homeRoutes } from './home'
 import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
@@ -13,48 +14,7 @@ const routes: Array<RouteRecordRaw> = [
       icon: 'home',
       notMenu: false
     },
-    children: [
-      {
-        path: 'user-center',
-        name: 'UserCenter',
-        component: () => import('@/views/userCenter'),
-        meta: {
-          title: '关于自己',
-          notMenu: false,
-          keepAlive: true,
-          icon: 'user_center'
-        }
-      },
-      {
-        path: 'user-article',
-        name: 'UserArticle',
-        component: () => import('@/views/userArticle'),
-        meta: {
-          title: '我的文章',
-          notMenu: false,
-          icon: 'user_article'
-        }
-      },
-      {
-        path: 'article-detail',
-        name: 'ArticleDetail',
-        component: () => import('@/views/articleDetail'),
-        meta: {
-          title: '文章详情',
-          notMenu: true
-        }
-      },
-      {
-        path: 'create-article',
-        name: 'CreateArticle',
-        component: () => import('@/views/createArticle'),
-        meta: {
-          title: '创建文章',
-          notMenu: true
-          // keepAlive: true
-        }
-      }
-    ]
+    children: [...homeRoutes]
   },
   {
     path: '/login',
@@ -73,11 +33,31 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach((to, from, next) => {
+  const auth = localStorage.getItem(StorageModuleKey.TOKEN_KEY)
   if (to.meta.keepAlive) {
     // 缓存页面
     store.dispatch(MutActKey.ADD_COMPONENT_CACHE, to.name)
   }
+
+  if (auth) {
+    if (to.name === 'Login') {
+      window.$message('您已处于登录状态', 'warning')
+      next({ name: 'Home' })
+    } else {
+      next()
+    }
+  } else {
+    // TODO 登录权限判断
+    window.$message('您尚未登录', 'warning')
+    if (to.name === 'Login') {
+      next()
+    } else {
+      next({ name: 'Login' })
+    }
+  }
+
+  next()
 })
 
 export default router

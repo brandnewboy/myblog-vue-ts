@@ -25,6 +25,7 @@ import {
   ElTabPane,
   ElMessage
 } from 'element-plus'
+import { MessageType } from '@/types/base'
 
 const components = [
   ElButton,
@@ -57,6 +58,12 @@ const Element = {
     components.forEach(component => {
       app.component(component.name, component)
     })
+    window.$message = (message: string, type: MessageType) => {
+      ElMessage({
+        message,
+        type
+      })
+    }
   }
 }
 
