@@ -16,3 +16,7 @@ export class MutActKey {
 export class StorageModuleKey {
   public static TOKEN_KEY = 'TOKEN'
 }
+
+export const NetErrorMsg = '请求出错!请检查网络或服务端设置!'
+export const RequestErroMsg = '请求出错'
+export const RequestTimeoutMsg = '请求超时'

@@ -1,8 +1,8 @@
 import { useAuth } from '@/components/AuthProvider'
+import { NetErrorMsg, RequestErroMsg, RequestTimeoutMsg } from '@/constants'
 import { RequestConfigProps, ResponseProps } from '@/types/api/request'
 import Utils from '@/utils'
 import { useAsync } from '@/utils/hooks/use-async'
-import { ElMessage } from 'element-plus'
 
 const BASE_URL = 'http://localhost:3001/api/v1'
 
@@ -16,7 +16,8 @@ export const http = async <R extends object | string | number, D>(
   path: string,
   options: RequestConfigProps<R>
 ) => {
-  const { method, data, token, headers } = options
+  const controller = new AbortController()
+  const { method, timeout, data, token, headers } = options
   let param = ''
   if (
     (method === 'get' || method === 'GET') &&
@@ -28,19 +29,22 @@ export const http = async <R extends object | string | number, D>(
   }
 
   const config: RequestInit = {
+    ...options,
     method,
     headers: {
       Authotization: token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
       ...headers
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+    signal: controller.signal
   }
 
   if (method === 'GET' || method === 'get') {
     delete config['body']
   }
 
+  const timeoutId = setTimeout(() => controller.abort(), timeout || 5000)
   return new Promise<ResponseProps<D>>((resolve, reject) => {
     fetch(`${BASE_URL}${path}`, config)
       .then(async res => {
@@ -49,23 +53,23 @@ export const http = async <R extends object | string | number, D>(
           const data = await res.json()
 
           window.$message(
-            data.msg || '请求出错',
+            data.msg || RequestErroMsg,
             data.code !== 200 ? 'error' : 'success'
           )
 
           resolve(data)
         } else {
-          window.$message('请求出错!请检查网络或服务端设置!', 'error')
-          reject(new Error('请求出错'))
+          window.$message(NetErrorMsg, 'error')
+          reject(new Error(NetErrorMsg))
         }
       })
       .catch((e: Error) => {
-        window.$message(
-          e ? e.message : '请求出错!请检查网络或服务端设置!',
-          'error'
-        )
-        reject(new Error('请求出错!'))
+        let msg = e ? e.message : ''
+        if (msg === 'The user aborted a request.') msg = RequestTimeoutMsg
+        window.$message(msg, 'error')
+        reject(new Error(RequestErroMsg))
       })
+      .finally(() => clearTimeout(timeoutId))
   })
 }
 
