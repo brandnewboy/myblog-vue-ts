@@ -28,7 +28,8 @@ export const homeRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/articleDetail'),
     meta: {
       title: '文章详情',
-      notMenu: true
+      notMenu: true,
+      keepAlive: false
     }
   },
   {

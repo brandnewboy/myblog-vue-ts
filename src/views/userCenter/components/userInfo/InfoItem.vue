@@ -1,7 +1,8 @@
 <template>
   <div class="info-item-container">
     <svg-icon :icon="icon" className="icon"></svg-icon>
-    <span>{{ content }}</span>
+    <a v-if="link" :href="content" target="_blank">{{ content }}</a>
+    <span v-else>{{ content }}</span>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 defineProps<{
   icon: string
   content: string
+  link?: boolean
 }>()
 </script>
 

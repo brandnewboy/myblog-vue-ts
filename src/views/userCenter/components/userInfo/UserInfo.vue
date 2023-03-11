@@ -6,6 +6,7 @@
       :key="item"
       :icon="icons[item]"
       :content="item"
+      :link="Utils.isExternal(item)"
     />
 
     <el-divider />
@@ -44,6 +45,8 @@
 import { reactive } from 'vue'
 import InfoItem from './InfoItem.vue'
 import { useWebmasterInfo } from '@/utils/hooks'
+import Utils from '@/utils'
+
 const [info, icons] = useWebmasterInfo()
 
 const learningSteps = reactive([

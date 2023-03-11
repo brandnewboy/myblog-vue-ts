@@ -3,7 +3,7 @@
     <div
       class="data-card"
       @click="gotoArticleDetail(item.id)"
-      v-for="item in list?.data"
+      v-for="item in list"
       :key="item.id"
     >
       <section class="data-content">

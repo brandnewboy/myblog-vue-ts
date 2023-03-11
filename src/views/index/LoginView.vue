@@ -89,7 +89,7 @@ const loginAction = () => {
       isSubmitLoading.value = true
       userLogin(loginForm)
         .then(res => {
-          store.dispatch(MutActKey.LOGIN, res.data?.token)
+          store.dispatch(MutActKey.LOGIN, res.token)
           router.push({ name: 'Home' })
         })
         .finally(() => (isSubmitLoading.value = false))

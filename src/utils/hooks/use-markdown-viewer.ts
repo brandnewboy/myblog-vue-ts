@@ -15,6 +15,9 @@ export const useMarkdownViewer = ({
 
   onMounted(() => {
     el = document.querySelector(`.${className}`) as HTMLElement
+    if (!el) {
+      throw new Error(`can't get the element named ${className}`)
+    }
     init(data)
   })
 

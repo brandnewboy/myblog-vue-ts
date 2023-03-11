@@ -32,8 +32,9 @@ export const http = async <R extends object | string | number, D>(
   path: string,
   options: RequestConfigProps<R>
 ) => {
+  const token = store.getters.token
   const controller = new AbortController()
-  const { method, timeout, data, token, headers } = options
+  const { method, timeout, data, headers } = options
   let param = ''
   if (
     (method === 'get' || method === 'GET') &&
@@ -61,7 +62,7 @@ export const http = async <R extends object | string | number, D>(
   }
 
   const timeoutId = setTimeout(() => controller.abort(), timeout || 5000)
-  return new Promise<ResponseProps<D>>((resolve, reject) => {
+  return new Promise<D>((resolve, reject) => {
     fetch(`${BASE_URL}${path}`, config)
       .then(async res => {
         if (res.status === 401) {
@@ -81,7 +82,7 @@ export const http = async <R extends object | string | number, D>(
             return
           }
 
-          resolve(data)
+          resolve(data.data)
         } else {
           window.$message(NetErrorMsg, 'error')
           reject(new Error(NetErrorMsg))
@@ -110,11 +111,7 @@ export const useHttp = <
   path: string,
   options: RequestConfigProps<RequestData>
 ) => {
-  const auth = useAuth()
-  if (!options.token && auth) {
-    options.token = auth
-  }
-  const res = useAsync<ResponseProps<ResponseData>>(
+  const res = useAsync<ResponseData>(
     http<RequestData, ResponseData>(path, options)
   )
   return res

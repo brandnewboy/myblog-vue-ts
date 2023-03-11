@@ -20,10 +20,10 @@ export const useWebmasterInfo = () => {
       address: '中国·云南·昆明',
       sex: '男',
       school: '云南财经大学',
-      github: 'www.github.cn/brandnewboy'
+      github: 'https://github.com/brandnewboy?tab=repositories'
     },
     tags: ['javascript', 'java', 'Typescript', 'vue', 'React', '篮球'],
-    desc: '自学前端滴大学牲，喜欢打篮球，不打游戏（重点），希望自己能多学一些东西吧'
+    desc: '自学前端滴大学牲，喜欢打篮球，希望自己能多学一些东西吧'
   })
 
   const icons = reactive<{
@@ -34,7 +34,7 @@ export const useWebmasterInfo = () => {
     '中国·云南·昆明': 'address',
     男: 'sex_boy',
     云南财经大学: 'edu',
-    'www.github.cn/brandnewboy': 'github'
+    'https://github.com/brandnewboy?tab=repositories': 'github'
   })
 
   return [data, icons] as const
