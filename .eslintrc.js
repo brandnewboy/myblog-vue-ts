@@ -2,7 +2,8 @@ const prettierConf = require('./.prettierrc.js')
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
+    'vue/setup-compiler-macros': true
   },
   extends: [
     'plugin:vue/vue3-essential',
@@ -20,7 +21,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    'no-extra-semi': 'warn',
+    'no-extra-semi': 'off',
     'arrow-parens': ['error', 'as-needed'],
     quotes: [1, 'single'],
     'comma-dangle': [

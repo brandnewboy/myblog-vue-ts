@@ -17,3 +17,5 @@ interface Window {
 
 declare const window: Window & typeof globalThis
 // declare function $message()
+
+declare module 'dayjs'

@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { MutActKey } from '@/constants'
-import { ArticleProps } from '@/types/base'
+import { Blog } from '@/types/base'
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -38,13 +38,15 @@ import { useLoading } from '@/utils/hooks'
 const editorMode = ref<'markdown' | 'futext'>('markdown')
 const router = useRouter()
 const store = useStore()
-const [loadingInstance, startLoading] = useLoading({ text: '提交中' })
+const { stopLoading, startLoading } = useLoading({ text: '提交中' })
 
-const article = reactive<ArticleProps>({
-  id: '1',
+const article = reactive<Blog>({
+  id: 1,
   title: '',
-  desc: '',
-  content: ''
+  createtime: 0,
+  content: '',
+  author: '',
+  desc: '随手记录的一片笔记'
 })
 
 const onSubmit = (content: string) => {
@@ -58,7 +60,7 @@ const onSubmit = (content: string) => {
       router.back()
       startLoading()
     })
-    .finally(() => loadingInstance.value?.close())
+    .finally(stopLoading)
 }
 </script>
 

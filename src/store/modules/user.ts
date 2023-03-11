@@ -1,7 +1,7 @@
 import { Module } from 'vuex'
 import { UserModuleStateProps, RootStateProps } from '@/types/store'
-import { LoginFormProps } from '@/types/base'
 import { StorageModuleKey } from '@/constants'
+import router from '@/router'
 
 const userModule: Module<UserModuleStateProps, RootStateProps> = {
   namespaced: true,
@@ -10,14 +10,22 @@ const userModule: Module<UserModuleStateProps, RootStateProps> = {
     token: localStorage.getItem(StorageModuleKey.TOKEN_KEY) || ''
   }),
   mutations: {
-    LOGIN(state, { token }) {
+    LOGOUT(state) {
+      ;(state.isLogin = false), (state.token = '')
+    },
+    LOGIN(state, token) {
       state.isLogin = true
       state.token = token
     }
   },
   actions: {
+    LOGOUT({ commit }) {
+      localStorage.clear()
+      commit('LOGOUT')
+      router.push({ name: 'Login' })
+    },
     LOGIN({ commit }, token: string) {
-      localStorage.setItem(StorageModuleKey.TOKEN_KEY, '123')
+      localStorage.setItem(StorageModuleKey.TOKEN_KEY, token)
       commit('LOGIN', token)
     }
   }

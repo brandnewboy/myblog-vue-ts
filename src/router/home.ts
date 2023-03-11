@@ -23,7 +23,7 @@ export const homeRoutes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: 'article-detail',
+    path: 'article-detail/:id',
     name: 'ArticleDetail',
     component: () => import('@/views/articleDetail'),
     meta: {

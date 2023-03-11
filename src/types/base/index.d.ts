@@ -3,11 +3,13 @@ export interface LoginFormProps {
   password: string
 }
 
-export interface ArticleProps {
-  id: string | number
-  desc: string
+export interface Blog {
+  id: number
   title: string
   content: string
+  createtime: number
+  author: string
+  desc: string
 }
 
 export interface UserProps {

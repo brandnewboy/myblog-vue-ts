@@ -1,10 +1,26 @@
 import { useAuth } from '@/components/AuthProvider'
-import { NetErrorMsg, RequestErroMsg, RequestTimeoutMsg } from '@/constants'
+import {
+  MutActKey,
+  NetErrorMsg,
+  RequestErroMsg,
+  RequestTimeoutMsg
+} from '@/constants'
 import { RequestConfigProps, ResponseProps } from '@/types/api/request'
 import Utils from '@/utils'
 import { useAsync } from '@/utils/hooks/use-async'
+import { ElMessageBox } from 'element-plus'
+import store from '@/store'
 
 const BASE_URL = 'http://localhost:3001/api/v1'
+
+const logout = () => {
+  ElMessageBox.alert('登陆状态已过期!', '提示', {
+    confirmButtonText: 'OK',
+    callback: () => {
+      store.dispatch(MutActKey.LOGOUT)
+    }
+  })
+}
 
 /**
  * 网络请求
@@ -32,7 +48,7 @@ export const http = async <R extends object | string | number, D>(
     ...options,
     method,
     headers: {
-      Authotization: token ? `Bearer ${token}` : '',
+      Authorization: token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
       ...headers
     },
@@ -48,14 +64,22 @@ export const http = async <R extends object | string | number, D>(
   return new Promise<ResponseProps<D>>((resolve, reject) => {
     fetch(`${BASE_URL}${path}`, config)
       .then(async res => {
-        if (res.status === 401) reject({ msg: '请授权' })
+        if (res.status === 401) {
+          logout()
+          reject('请授权')
+          return
+        }
         if (res.ok) {
           const data = await res.json()
 
-          window.$message(
-            data.msg || RequestErroMsg,
-            data.code !== 200 ? 'error' : 'success'
-          )
+          data.code !== 200 &&
+            window.$message(data.msg || RequestErroMsg, 'success')
+
+          if (data.code === 401) {
+            logout()
+            reject()
+            return
+          }
 
           resolve(data)
         } else {

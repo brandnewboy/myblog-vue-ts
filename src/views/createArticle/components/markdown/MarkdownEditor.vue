@@ -9,7 +9,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits } from 'vue'
 import { useMarkdown } from '@/utils/hooks/use-markdown'
 
 const emits = defineEmits<{

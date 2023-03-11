@@ -1,31 +1,24 @@
 <template>
   <div class="article-detail-container">
-    <PageHeader class="header" :title="data.title" time="2022-11-26" />
+    <!-- <PageHeader class="header" :title="data?.data[0].title" time="2022-11-26" /> -->
 
     <article ref="articleContent" class="article-content"></article>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
 import PageHeader from './PageHeader.vue'
-import { ArticleProps } from '@/types/base'
 import { useMarkdownViewer } from '@/utils/hooks/use-markdown-viewer'
+import { useArticleList } from '@/api/article'
+import { useRoute } from 'vue-router'
 
-const store = useStore()
+const route = useRoute()
 
-const data = computed<ArticleProps>(
-  () =>
-    store.state.AppModule.articleList[0] || {
-      title: '',
-      content: ''
-    }
-)
-
+const { data } = useArticleList({ id: Number(route.params.id) })
+console.log(data)
 const viewer = useMarkdownViewer({
   className: 'article-content',
-  data: data.value.content
+  data: ''
 })
 </script>
 

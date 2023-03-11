@@ -7,6 +7,5 @@ export const useAuth = () => {
   const auth = inject<string>('auth')
 
   // TODO
-
   return auth
 }
