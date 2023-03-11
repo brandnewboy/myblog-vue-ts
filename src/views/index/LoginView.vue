@@ -39,78 +39,63 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import Utils from '@/utils'
 import { LoginFormProps } from '@/types/base'
 import { ContainerBgController } from '@/utils/style/login'
 import { MutActKey } from '@/constants'
-import { defineComponent, onMounted, reactive, Ref, ref } from 'vue'
+import { onMounted, reactive, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { userLogin } from '@/api/user'
-export default defineComponent({
-  setup() {
-    const router = useRouter()
-    const store = useStore()
-    const toggleLocale = () => store.commit(MutActKey.TOGGLE_LOCALE)
+const router = useRouter()
+const store = useStore()
+const toggleLocale = () => store.commit(MutActKey.TOGGLE_LOCALE)
 
-    let bgController: ContainerBgController
-    // 背景模糊控制
-    onMounted(() => {
-      bgController = new ContainerBgController()
-    })
-    const containerBgFilter = () => bgController.toggleControl('focus')
-    const cancelContainerBgFilter = () => bgController.toggleControl('blur')
-
-    const loginForm = reactive<LoginFormProps>({
-      username: '混吃等死的咸鱼仔',
-      password: '123456'
-    })
-    const formRules = reactive({
-      username: [
-        {
-          required: true,
-          trigger: 'blur',
-          validator: Utils.Validator.validateUsername
-        }
-      ],
-      password: [
-        {
-          required: true,
-          trigger: 'change',
-          validator: Utils.Validator.validatePassword
-        }
-      ]
-    })
-    const formRef = ref()
-    let isSubmitLoading = ref<boolean>(false)
-
-    const loginAction = () => {
-      formRef.value.validate((isValid: boolean) => {
-        if (isValid) {
-          isSubmitLoading.value = true
-          userLogin(loginForm)
-            .then(res => {
-              store.dispatch(MutActKey.LOGIN, res.data?.token)
-              router.push({ name: 'Home' })
-            })
-            .finally(() => (isSubmitLoading.value = false))
-        }
-      })
-    }
-
-    return {
-      toggleLocale,
-      containerBgFilter,
-      cancelContainerBgFilter,
-      loginForm,
-      loginAction,
-      formRules,
-      formRef,
-      isSubmitLoading
-    }
-  }
+let bgController: ContainerBgController
+// 背景模糊控制
+onMounted(() => {
+  bgController = new ContainerBgController()
 })
+const containerBgFilter = () => bgController.toggleControl('focus')
+const cancelContainerBgFilter = () => bgController.toggleControl('blur')
+
+const loginForm = reactive<LoginFormProps>({
+  username: '混吃等死的咸鱼仔',
+  password: '123456'
+})
+const formRules = reactive({
+  username: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator: Utils.Validator.validateUsername
+    }
+  ],
+  password: [
+    {
+      required: true,
+      trigger: 'change',
+      validator: Utils.Validator.validatePassword
+    }
+  ]
+})
+const formRef = ref()
+let isSubmitLoading = ref<boolean>(false)
+
+const loginAction = () => {
+  formRef.value.validate((isValid: boolean) => {
+    if (isValid) {
+      isSubmitLoading.value = true
+      userLogin(loginForm)
+        .then(res => {
+          store.dispatch(MutActKey.LOGIN, res.data?.token)
+          router.push({ name: 'Home' })
+        })
+        .finally(() => (isSubmitLoading.value = false))
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -121,7 +106,6 @@ $filter: blur(4px);
   position: relative;
   min-height: 100vh;
   height: 100%;
-  // background-image: url(@/assets/images/login_bgimg.png);
   background-position: top center;
   background-size: 100% 100%;
 }
@@ -131,7 +115,6 @@ $filter: blur(4px);
   display: block;
   width: 100%;
   height: 100%;
-  // background-image: url(@/assets/images/login_bgimg.png);
   background-position: top center;
   background-size: 100% 100%;
   filter: blur(10px);

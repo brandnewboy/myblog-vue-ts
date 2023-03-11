@@ -44,7 +44,8 @@ type LoadingOptionsProps = Parameters<typeof ElLoading.service>
 
 export const useLoading = ({
   text,
-  background
+  background,
+  ...rest
 }: {
   text?: string
   background?: string
@@ -56,9 +57,13 @@ export const useLoading = ({
     loadingInstance.value = service({
       lock: true,
       text: text || 'Loading',
-      background: background || 'rgba(0, 0, 0, 0.7)'
+      background: background || 'rgba(0, 0, 0, 0.7)',
+      ...rest
     })
   }
 
-  return [loadingInstance, startLoading] as const
+  const stopLoading = () =>
+    loadingInstance.value && loadingInstance.value.close()
+
+  return { stopLoading, startLoading }
 }

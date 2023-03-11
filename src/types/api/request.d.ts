@@ -16,7 +16,7 @@ export interface RequestConfigProps<
   data?: T
   token?: string
   method: HttpMethods
-  timeout: number
+  timeout?: number
   headers?: {
     [x: string]: string
   }
