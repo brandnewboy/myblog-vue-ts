@@ -1,4 +1,5 @@
 import { Blog } from '@/types/base'
+import { useLoading } from '@/utils/hooks'
 import { http, useHttp } from './request'
 
 const BLOG_BASE_URL = '/blog'
@@ -16,11 +17,24 @@ export const useArticleList = (param?: Partial<Blog>) => {
   return res
 }
 
-export const getArticleDetail = (id: number) => {
+export const getArticleDetail = (id: string) => {
   return new Promise<Blog>(resolve => {
-    http<{ id: number }, Blog[]>(BLOG_BASE_URL + '/list', {
+    http<{ id: string }, Blog[]>(BLOG_BASE_URL + '/list', {
       method: 'GET',
       data: { id }
     }).then(data => resolve(data[0]))
+  })
+}
+
+export const useAddBlog = (blog: Blog) => {
+  const { startLoading, stopLoading } = useLoading({ text: '提交中' })
+  startLoading()
+  return new Promise(resolve => {
+    http<Blog, { success: boolean }>(BLOG_BASE_URL + '/add', {
+      method: 'POST',
+      data: blog
+    })
+      .then(res => resolve(res))
+      .finally(stopLoading)
   })
 }

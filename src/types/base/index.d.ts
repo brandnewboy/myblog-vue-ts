@@ -4,7 +4,7 @@ export interface LoginFormProps {
 }
 
 export interface Blog {
-  id: number
+  id: string
   title: string
   content: string
   createtime: number

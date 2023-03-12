@@ -12,6 +12,10 @@
       <el-input v-model="article.title" placeholder="标题" />
     </div>
 
+    <div class="create-article-title">
+      <el-input v-model="article.desc" placeholder="描述" />
+    </div>
+
     <div class="editor-container">
       <el-tabs v-model="editorMode" type="border-card" class="demo-tabs">
         <el-tab-pane label="markdown" name="markdown">
@@ -26,22 +30,16 @@
 </template>
 
 <script lang="ts" setup>
-import { MutActKey } from '@/constants'
-import { Blog } from '@/types/base'
 import { reactive, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 import FuEditor from './components/fuEditor'
 import Markdown from './components/markdown'
-import { useLoading } from '@/utils/hooks'
+import { useAddBlog } from '@/api/article'
+import { Blog } from '@/types/base'
 
 const editorMode = ref<'markdown' | 'futext'>('markdown')
-const router = useRouter()
-const store = useStore()
-const { stopLoading, startLoading } = useLoading({ text: '提交中' })
 
 const article = reactive<Blog>({
-  id: 1,
+  id: '',
   title: '',
   createtime: 0,
   content: '',
@@ -51,16 +49,7 @@ const article = reactive<Blog>({
 
 const onSubmit = (content: string) => {
   article.content = content
-  store
-    .dispatch(MutActKey.ADD_ARTICLE, {
-      title: article.title,
-      content: article.content
-    })
-    .then(() => {
-      router.back()
-      startLoading()
-    })
-    .finally(stopLoading)
+  useAddBlog(article).then(() => window.$message('提交成功', 'success'))
 }
 </script>
 

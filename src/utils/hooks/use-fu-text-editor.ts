@@ -16,6 +16,7 @@ export const useFuTextEditor = (
     editor.value.config.showMenuTooltips = true
     editor.value.config.menuTooltipPosition = 'down'
     editor.value.config.height = 400
+    editor.value.config.colors = ['#4d80bf']
 
     const old = { ...editor.value.config }
     editor.value.config = { ...old, ...config }
@@ -26,6 +27,5 @@ export const useFuTextEditor = (
     el.value = document.querySelector(`.${element}`)
     initEditor()
   })
-
   return editor
 }

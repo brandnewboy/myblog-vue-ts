@@ -9,7 +9,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits } from 'vue'
 import { useFuTextEditor } from '@/utils/hooks/use-fu-text-editor'
 
 const emits = defineEmits<{

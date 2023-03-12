@@ -18,11 +18,10 @@ import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
 import { Blog } from '@/types/base'
 import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
-
 const route = useRoute()
 const data = ref<Blog>()
 onMounted(() => {
-  getArticleDetail(Number(route.params.id)).then(res => {
+  getArticleDetail(String(route.params.id)).then(res => {
     data.value = res
     new Viewer({
       el: document.querySelector('.article-content') as HTMLElement,
