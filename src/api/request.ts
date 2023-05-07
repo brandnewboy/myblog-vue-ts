@@ -49,7 +49,7 @@ export const http = async <R extends object | string | number, D>(
     ...options,
     method,
     headers: {
-      Authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : '',
       'Content-Type': 'application/json',
       ...headers
     },
@@ -114,5 +114,6 @@ export const useHttp = <
   const res = useAsync<ResponseData>(
     http<RequestData, ResponseData>(path, options)
   )
+
   return res
 }

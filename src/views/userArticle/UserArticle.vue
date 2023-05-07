@@ -1,45 +1,69 @@
 <template>
-  <div class="user-article-container">
-    <div
-      class="data-card"
-      @click="gotoArticleDetail(item.id)"
-      v-for="item in list"
-      :key="item.id"
-    >
-      <section class="data-content">
-        <div>
-          <svg-icon className="content-img" icon="default_article" />
-        </div>
-        <div>
-          <h4>{{ item.title }}</h4>
-          {{ item.desc ?? '随便记录一下' }}
-        </div>
-      </section>
-      <section>
-        <el-tag type="warning" effect="light" round>精选</el-tag>
-        <span class="create-time">{{
-          dayjs(item.createtime).format('YYYY-MM-DD HH:mm')
-        }}</span>
-      </section>
+  <div>
+    <div class="header-search">
+      <el-form :model="searchParam" :inline="true">
+        <el-form-item label="文章名" prop="title">
+          <el-input
+            placeholder="请输入文章名"
+            v-model="searchParam.title"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="warning" @click="reFetch">筛选</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="user-article-container">
+      <div
+        class="data-card"
+        @click="gotoArticleDetail(item.id)"
+        v-for="item in list"
+        :key="item.id"
+      >
+        <section class="data-content">
+          <div>
+            <svg-icon className="content-img" icon="default_article" />
+          </div>
+          <div>
+            <h4>{{ item.title }}</h4>
+            {{ item.desc ?? '随便记录一下' }}
+          </div>
+        </section>
+        <section>
+          <el-tag type="warning" effect="light" round>精选</el-tag>
+          <span class="create-time">{{
+            dayjs(item.createtime).format('YYYY-MM-DD HH:mm')
+          }}</span>
+        </section>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { useArticleList } from '@/api/article'
 import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
+import { Blog } from '@/types/base'
 const router = useRouter()
 
 const gotoCreateArticle = () => router.push({ name: 'CreateArticle' })
-const gotoArticleDetail = (id: number) =>
+const gotoArticleDetail = (id: string) =>
   router.push({ path: 'article-detail/' + id })
-const { data: list } = useArticleList()
+
+const searchParam = ref<Partial<Blog>>({
+  title: ''
+})
+const { data: list, reFetch } = useArticleList(searchParam.value)
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variable.scss';
-@import '@/assets/styles/mixin.scss';
+@import '~@/assets/styles/variable.scss';
+@import '~@/assets/styles/mixin.scss';
+.header-search {
+  margin: 1rem;
+}
 .user-article-container {
   width: 100%;
   height: 100%;

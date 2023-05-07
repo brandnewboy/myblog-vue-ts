@@ -6,29 +6,19 @@
       :time="dayjs(data?.createtime).format('YYYY-MM-DD HH:mm')"
     />
 
-    <article ref="articleContent" class="article-content"></article>
+    <article ref="articleContent" class="article-content">
+      <v-md-preview :text="data?.content"></v-md-preview>
+    </article>
   </div>
 </template>
 
 <script lang="ts" setup>
 import PageHeader from './PageHeader.vue'
-import { getArticleDetail } from '@/api/article'
+import { useArticleDetail } from '@/api/article'
 import { useRoute } from 'vue-router'
-import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
-import { Blog } from '@/types/base'
-import { onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
 const route = useRoute()
-const data = ref<Blog>()
-onMounted(() => {
-  getArticleDetail(String(route.params.id)).then(res => {
-    data.value = res
-    new Viewer({
-      el: document.querySelector('.article-content') as HTMLElement,
-      initialValue: data.value.content
-    })
-  })
-})
+const { data } = useArticleDetail(String(route.params.id))
 </script>
 
 <style lang="scss" scoped>

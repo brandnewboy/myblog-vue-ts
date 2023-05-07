@@ -1,12 +1,18 @@
 <template>
   <div>
-    <h1>
-      创建文章
-      <el-button @click="$router.back()" type="warning">
-        <svg-icon icon="back" className="back-icon" />
-        <span>返回</span>
-      </el-button>
-    </h1>
+    <header class="header">
+      <h1>创建文章</h1>
+      <section>
+        <el-button @click="$router.back()" type="warning">
+          <svg-icon icon="back" className="icon" />
+          <span>返回</span>
+        </el-button>
+        <el-button @click="onSubmit" type="warning">
+          <svg-icon icon="post" className="icon" />
+          <span>提交</span>
+        </el-button>
+      </section>
+    </header>
 
     <div class="create-article-title">
       <el-input v-model="article.title" placeholder="标题" />
@@ -17,26 +23,18 @@
     </div>
 
     <div class="editor-container">
-      <el-tabs v-model="editorMode" type="border-card" class="demo-tabs">
-        <el-tab-pane label="markdown" name="markdown">
-          <Markdown @submit="onSubmit" />
-        </el-tab-pane>
-        <el-tab-pane label="富文本" name="futext">
-          <FuEditor @submit="onSubmit" />
-        </el-tab-pane>
-      </el-tabs>
+      <v-md-editor v-model="article.content" height="400px"></v-md-editor>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import FuEditor from './components/fuEditor'
-import Markdown from './components/markdown'
+import { useRouter } from 'vue-router'
 import { useAddBlog } from '@/api/article'
 import { Blog } from '@/types/base'
 
-const editorMode = ref<'markdown' | 'futext'>('markdown')
+const router = useRouter()
 
 const article = reactive<Blog>({
   id: '',
@@ -47,17 +45,23 @@ const article = reactive<Blog>({
   desc: '随手记录的一片笔记'
 })
 
-const onSubmit = (content: string) => {
-  article.content = content
-  useAddBlog(article).then(() => window.$message('提交成功', 'success'))
+const onSubmit = () => {
+  useAddBlog(article)
+    .then(() => window.$message('提交成功', 'success'))
+    .finally(router.back)
 }
 </script>
 
 <style lang="scss" scoped>
-.back-icon {
-  width: 1.5em;
-  height: 1.5em;
+.icon {
+  width: 1.2em;
+  height: 1.2em;
   margin-right: 1px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
 }
 .editor-container {
   margin-top: 1rem;

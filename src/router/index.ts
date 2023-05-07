@@ -5,6 +5,16 @@ import store from '@/store'
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/css-case',
+    name: 'CSSCase',
+    meta: {
+      title: 'CSS练习',
+      notMenu: true,
+      keepAlive: false
+    },
+    component: () => import('@/views/cssCase')
+  },
+  {
     path: '/',
     name: 'Home',
     redirect: '/user-center',
