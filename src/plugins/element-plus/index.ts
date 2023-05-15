@@ -23,7 +23,8 @@ import {
   ElStep,
   ElTabs,
   ElTabPane,
-  ElMessage
+  ElMessage,
+  ElPopconfirm
 } from 'element-plus'
 import { MessageType } from '@/types/base'
 
@@ -50,7 +51,8 @@ const components = [
   ElSteps,
   ElStep,
   ElTabs,
-  ElTabPane
+  ElTabPane,
+  ElPopconfirm
 ]
 
 const Element = {

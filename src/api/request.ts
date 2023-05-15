@@ -73,8 +73,9 @@ export const http = async <R extends object | string | number, D>(
         if (res.ok) {
           const data = await res.json()
 
-          data.code !== 200 &&
-            window.$message(data.msg || RequestErroMsg, 'success')
+          if (data.code !== 200) {
+            window.$message(data.msg || RequestErroMsg, 'error')
+          }
 
           if (data.code === 401) {
             logout()

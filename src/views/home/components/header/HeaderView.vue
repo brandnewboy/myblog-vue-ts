@@ -10,14 +10,20 @@
       </el-button>
     </div>
   </section>
-  <section class="header-right">right</section>
+  <section class="header-right">
+    <el-popconfirm title="确定退出登录吗？" @confirm="confirmLogout">
+      <template #reference>
+        <el-button type="warning">退出登录</el-button>
+      </template>
+    </el-popconfirm>
+  </section>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { MutActKey } from '@/constants'
+import { MutActKey, StorageModuleKey } from '@/constants'
 
 const router = useRouter()
 const store = useStore()
@@ -26,6 +32,11 @@ const collapseAsideBar = () => store.dispatch(MutActKey.COLLAPSE_ASIDE_BAR)
 const collapseIcon = computed(() =>
   store.getters.asideBarCollapseState ? 'expand' : 'fold'
 )
+
+const confirmLogout = () => {
+  window.localStorage.removeItem(StorageModuleKey.TOKEN_KEY)
+  router.push({ name: 'Login' })
+}
 </script>
 
 <style lang="scss" scoped>
